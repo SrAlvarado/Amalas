@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 export interface AuthShellProps {
   /** Contenido principal (formularios, botones social) */

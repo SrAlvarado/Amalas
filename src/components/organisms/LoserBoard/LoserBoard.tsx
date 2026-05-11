@@ -1,8 +1,8 @@
-import { Icon } from '../../atoms/Icon'
-import { Avatar, AvatarFace } from '../../atoms/Avatar'
+import { Avatar } from '../../atoms/Avatar'
+import type { AvatarFace } from '../../atoms/Avatar'
 
 export interface LoserBoardProps {
-  /** Posición (normalmente la última) */
+  /** Posición en el ranking (generalmente la última) */
   pos: number
   /** Nombre del perdedor */
   name: string
@@ -10,83 +10,62 @@ export interface LoserBoardProps {
   pts: number
   /** Cara del avatar */
   face: AvatarFace
-  /** Mensaje de humillación (ej. 3 "PUES BIEN" esta semana) */
-  shameMessage?: string
-  /** Castigo actual */
+  /** Título del castigo */
   punishmentTitle: string
   /** Descripción del castigo */
   punishmentDesc: string
+  /** Mensaje de vergüenza adicional */
+  shameMessage?: string
   /** Clases adicionales */
   className?: string
 }
 
 /**
- * Organismo LoserBoard: Tarjeta roja de humillación para el último del ranking.
- * Incluye avatares en escala de grises y el detalle del castigo a pagar.
+ * Organismo LoserBoard: Cuadro de castigo para el último del ranking.
+ * Estética de "muro de la vergüenza" con colores apagados y tipografía agresiva.
  */
 export function LoserBoard({
   pos,
   name,
   pts,
   face,
-  shameMessage = '3 "PUES BIEN" esta semana 💀',
   punishmentTitle,
   punishmentDesc,
   className = '',
 }: LoserBoardProps) {
   return (
-    <div className={`relative ${className}`}>
-      {/* Loser Badge */}
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10 bg-[#EF233C] text-white font-display text-[16px] px-3 py-1 rotate-[3deg] border-[2.5px] border-black shadow-comic">
-        ¡PERDEDOR!
-      </div>
+    <div className={`relative border-[4px] border-black bg-[#E5E5E5] p-6 shadow-comic-xl overflow-hidden ${className}`}>
+      {/* Texture */}
+      <div className="absolute inset-0 halftone opacity-10 pointer-events-none" />
       
-      <div className="relative bg-[#EF233C] border-[4px] border-black rounded-md shadow-comic-xl overflow-hidden">
-        {/* Halftone Texture */}
-        <div className="absolute inset-0 halftone opacity-30 pointer-events-none" />
-        
-        {/* Content */}
-        <div className="relative px-4 pt-6 pb-3 flex items-center gap-3">
-          {/* Posición en negro */}
-          <div className="w-16 h-16 bg-black text-white font-display text-[34px] flex items-center justify-center border-[3.5px] border-black flex-shrink-0">
-            {pos}
-          </div>
-          
-          {/* Avatar en escala de grises */}
-          <div className="relative flex-shrink-0">
-            <Avatar face={face} size="lg" className="border-[3.5px] border-black grayscale contrast-125" />
-            <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-white border-2 border-black rounded-full flex items-center justify-center shadow-comic">
-              <Icon size={14} stroke={2.5}>
-                <path d="M5 11a7 7 0 0114 0v4a2 2 0 01-2 2h-1v3h-2v-3h-4v3H8v-3H7a2 2 0 01-2-2z" />
-                <circle cx="9" cy="12" r="1.4" fill="currentColor" />
-                <circle cx="15" cy="12" r="1.4" fill="currentColor" />
-              </Icon>
-            </div>
-          </div>
-          
-          <div className="flex-1 min-w-0">
-            <div className="font-heavy text-[10px] tracking-widest text-[#FFD60A] uppercase">FAROLILLO ROJO</div>
-            <div className="font-display text-white text-[28px] leading-none uppercase truncate">{name}</div>
-            <div className="font-heavy text-[11px] text-white/85 mt-0.5">{shameMessage}</div>
-          </div>
-          
-          <div className="text-right text-white flex-shrink-0">
-            <div className="font-display text-[36px] leading-none">{pts}</div>
-            <div className="font-heavy text-[10px] uppercase">PUNTOS</div>
+      {/* Header Badge */}
+      <div className="absolute top-0 right-0 bg-black text-white px-4 py-1 font-display text-[14px] uppercase rotate-0 origin-top-right">
+        ¡EL CASTIGADO!
+      </div>
+
+      <div className="flex flex-col items-center gap-4 relative z-10">
+        <div className="relative">
+          <Avatar face={face} size="xl" className="grayscale border-black" />
+          <div className="absolute -top-2 -left-2 bg-black text-white w-10 h-10 flex items-center justify-center font-display text-xl rotate-[-12deg] shadow-comic">
+            #{pos}
           </div>
         </div>
-        
-        {/* Punishment Sign */}
-        <div className="relative mx-3 mb-3">
-          <div className="bg-[#FFD60A] border-[3.5px] border-black p-2.5 rotate-[-1.5deg] shadow-[4px_4px_0_0_#000]">
-            <div className="font-heavy text-[10px] tracking-widest text-black/70 mb-0.5 uppercase">CASTIGO ACTUAL</div>
-            <div className="font-display text-[22px] leading-tight text-black uppercase">
-              {punishmentTitle}
-            </div>
-            <div className="font-heavy text-[11px] mt-1.5">
-              <span className="bg-black text-[#FFD60A] px-1.5 uppercase">SE EJECUTA</span> {punishmentDesc}
-            </div>
+
+        <div className="text-center">
+          <h3 className="font-display text-[28px] leading-none uppercase mb-1">{name}</h3>
+          <p className="font-heavy text-[12px] text-black/50 uppercase">Con {pts} puntos (¡Vaya tela!)</p>
+        </div>
+
+        <div className="w-full bg-white border-[3px] border-black p-4 mt-2 relative rotate-[1deg]">
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#EF233C] text-white font-heavy text-[10px] px-2 py-0.5 uppercase tracking-tighter border-[2px] border-black">
+            CASTIGO DEL MES
           </div>
+          <div className="font-display text-[20px] text-[#EF233C] leading-tight uppercase text-center mt-1">
+            {punishmentTitle}
+          </div>
+          <p className="font-heavy text-[11px] text-center mt-2 opacity-60 uppercase">
+            {punishmentDesc}
+          </p>
         </div>
       </div>
     </div>

@@ -4,23 +4,27 @@ import { SquadMember } from '../SquadMember'
 
 describe('SquadMember Molecule', () => {
   it('renders name correctly', () => {
-    render(<SquadMember name="JON" face="face-6" />)
-    expect(screen.getByText('JON')).toBeInTheDocument()
+    render(<SquadMember name="PEPE" face="face-1" />)
+    expect(screen.getByText('PEPE')).toBeInTheDocument()
   })
 
   it('shows checkmark when done is true', () => {
-    render(<SquadMember name="JON" face="face-6" done={true} />)
-    expect(screen.getByText('✓')).toBeInTheDocument()
+    const { container } = render(<SquadMember name="PEPE" face="face-1" done={true} />)
+    // Buscamos el contenedor del check por su clase de fondo verde (escapando caracteres especiales de Tailwind)
+    const check = container.querySelector('div[class*="bg-[#2B9348]"]')
+    expect(check).toBeInTheDocument()
   })
 
-  it('shows question mark when done is false', () => {
-    render(<SquadMember name="JON" face="face-6" done={false} />)
-    expect(screen.getByText('?')).toBeInTheDocument()
+  it('applies grayscale when done is false', () => {
+    const { container } = render(<SquadMember name="PEPE" face="face-1" done={false} />)
+    const avatar = container.querySelector('.grayscale')
+    expect(avatar).toBeInTheDocument()
   })
 
   it('applies isYou styles correctly', () => {
-    const { container } = render(<SquadMember name="TÚ" face="face-5" isYou={true} />)
-    expect(container.firstChild).toHaveClass('ring-2', 'ring-[#EF233C]')
-    expect(screen.getByText('TÚ')).toBeInTheDocument()
+    render(<SquadMember name="PEPE" face="face-1" isYou={true} />)
+    const name = screen.getByText('TÚ')
+    expect(name).toBeInTheDocument()
+    expect(name.className).toContain('text-[#1B6CFF]')
   })
 })

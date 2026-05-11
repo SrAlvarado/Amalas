@@ -1,4 +1,5 @@
-import { Avatar, AvatarFace } from '../../atoms/Avatar'
+import { Avatar } from '../../atoms/Avatar'
+import type { AvatarFace } from '../../atoms/Avatar'
 
 export interface RankItemProps {
   /** Posición en el ranking */
@@ -9,7 +10,7 @@ export interface RankItemProps {
   pts: number
   /** Cara del avatar */
   face: AvatarFace
-  /** Tendencia respecto a ayer (positivo o negativo) */
+  /** Tendencia (-1, 0, 1) */
   trend?: number
   /** Si es el usuario actual */
   isYou?: boolean
@@ -18,8 +19,8 @@ export interface RankItemProps {
 }
 
 /**
- * Molécula RankItem: Fila individual para el ranking (El Muro).
- * Muestra posición, avatar, nombre, tendencia y puntuación total.
+ * Molécula RankItem: Fila individual de la clasificación.
+ * Muestra posición, avatar, nombre y puntos con estilo cómic.
  */
 export function RankItem({
   pos,
@@ -30,42 +31,42 @@ export function RankItem({
   isYou = false,
   className = '',
 }: RankItemProps) {
-  const trendText = trend > 0 
-    ? `↑ +${trend} vs ayer` 
-    : trend < 0 
-      ? `↓ ${trend} vs ayer` 
-      : '— igual'
-
   return (
-    <div className={`relative bg-white border-[3.5px] border-black shadow-comic flex items-center gap-3 p-2.5 transition-all hover:-translate-y-1 ${isYou ? 'ring-2 ring-[#1B6CFF] ring-offset-2 ring-offset-[#F4ECD8]' : ''} ${className}`}>
-      {/* Posición */}
-      <div className="w-12 h-12 bg-black text-white font-display text-[24px] flex items-center justify-center flex-shrink-0">
+    <div 
+      className={`flex items-center gap-3 p-3 border-[2.5px] border-black shadow-comic transition-transform hover:scale-[1.02] ${isYou ? 'bg-[#FFD60A]' : 'bg-white'} ${className}`}
+    >
+      {/* Position */}
+      <div className="w-8 h-8 flex items-center justify-center bg-black text-white font-display text-lg">
         {pos}
       </div>
       
       {/* Avatar */}
-      <Avatar face={face} size="md" className="border-[3px] border-black" />
+      <Avatar face={face} size="md" border={false} />
       
       {/* Info */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-1.5">
-          <span className="font-heavy text-[14px] truncate uppercase">{name}</span>
-          {isYou && (
-            <span className="bg-[#1B6CFF] text-white font-black text-[9px] px-1.5 py-[1px] flex-shrink-0">
-              TÚ
-            </span>
-          )}
+        <div className="font-display text-[16px] leading-none uppercase truncate">
+          {name} {isYou && <span className="text-[10px] font-heavy">(TÚ)</span>}
         </div>
-        <div className={`font-heavy text-[10px] ${trend > 0 ? 'text-green-600' : trend < 0 ? 'text-[#EF233C]' : 'text-black/55'}`}>
-          {trendText}
+        <div className="font-heavy text-[11px] text-black/40 uppercase">
+          NIVEL GAMBERRO
         </div>
       </div>
       
-      {/* Puntos */}
-      <div className="text-right flex-shrink-0">
-        <div className="font-display text-[22px] leading-none">{pts}</div>
-        <div className="font-heavy text-[9px] text-black/55">PTS</div>
+      {/* Points */}
+      <div className="text-right">
+        <div className="font-display text-[20px] leading-none">
+          {pts}
+        </div>
+        <div className="font-heavy text-[9px] uppercase">
+          PUNTOS
+        </div>
       </div>
+      
+      {/* Trend Indicator (simplified) */}
+      {trend !== 0 && (
+        <div className={`w-2 h-2 rounded-full ${trend > 0 ? 'bg-green-500' : 'bg-red-500'}`} />
+      )}
     </div>
   )
 }

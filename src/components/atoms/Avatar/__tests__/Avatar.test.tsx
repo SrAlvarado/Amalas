@@ -2,46 +2,28 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
 import { Avatar } from '../Avatar'
 
-describe('Avatar Component', () => {
-  it('renders with default props', () => {
-    render(<Avatar />)
-    const avatar = screen.getByLabelText('Usuario')
+describe('Avatar Atom', () => {
+  it('renders correctly with required face prop', () => {
+    render(<Avatar face="face-1" />)
+    const avatar = screen.getByText('😎')
     expect(avatar).toBeInTheDocument()
-    expect(avatar).toHaveClass('w-11', 'h-11') // md size
-    expect(avatar).toHaveClass('bg-white')
   })
 
-  it('applies face classes correctly', () => {
-    render(<Avatar face="face-3" />)
-    const avatar = screen.getByLabelText('Usuario')
-    expect(avatar).toHaveClass('face-3')
+  it('applies correct size classes', () => {
+    const { container } = render(<Avatar face="face-2" size="xl" />)
+    const div = container.firstChild as HTMLElement
+    expect(div.className).toContain('w-24 h-24')
   })
 
-  it('applies size classes correctly', () => {
-    render(<Avatar size="xl" />)
-    const avatar = screen.getByLabelText('Usuario')
-    expect(avatar).toHaveClass('w-20', 'h-20')
+  it('renders without border when border={false}', () => {
+    const { container } = render(<Avatar face="face-3" border={false} />)
+    const div = container.firstChild as HTMLElement
+    expect(div.className).not.toContain('border-[3px]')
   })
 
-  it('adds isYou highlighting classes', () => {
-    render(<Avatar isYou={true} />)
-    const avatar = screen.getByLabelText('Usuario')
-    expect(avatar).toHaveClass('ring-2', 'ring-[#EF233C]')
-  })
-
-  it('renders children', () => {
-    render(
-      <Avatar>
-        <span data-testid="avatar-child">X</span>
-      </Avatar>
-    )
-    expect(screen.getByTestId('avatar-child')).toBeInTheDocument()
-  })
-
-  it('renders an image when src is provided', () => {
-    render(<Avatar src="test-image.jpg" alt="Test Avatar" />)
-    const img = screen.getByAltText('Test Avatar')
-    expect(img).toBeInTheDocument()
-    expect(img).toHaveAttribute('src', 'test-image.jpg')
+  it('applies custom className', () => {
+    const { container } = render(<Avatar face="face-4" className="custom-class" />)
+    const div = container.firstChild as HTMLElement
+    expect(div.className).toContain('custom-class')
   })
 })

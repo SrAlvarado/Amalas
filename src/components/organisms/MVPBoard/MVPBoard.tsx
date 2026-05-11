@@ -1,83 +1,76 @@
-import { Icon } from '../../atoms/Icon'
-import { Avatar, AvatarFace } from '../../atoms/Avatar'
+import { Avatar } from '../../atoms/Avatar'
+import type { AvatarFace } from '../../atoms/Avatar'
 
 export interface MVPBoardProps {
-  /** Nombre del MVP */
+  /** Nombre del líder */
   name: string
-  /** Cara del avatar */
-  face: AvatarFace
   /** Puntos actuales */
   pts: number
-  /** Tendencia (+N) */
+  /** Cara del avatar */
+  face: AvatarFace
+  /** Tendencia o racha */
   trend: number
-  /** Premio o descripción */
+  /** Recompensa opcional */
   reward?: string
   /** Clases adicionales */
   className?: string
 }
 
 /**
- * Organismo MVPBoard: Tarjeta dorada destacada para el líder del ranking semanal.
- * Utiliza colores dorados, elementos burst y el icono de la corona.
+ * Organismo MVPBoard: Cuadro de honor para el líder del ranking.
+ * Estética premium con dorado, destellos y tipografía de impacto.
  */
 export function MVPBoard({
   name,
-  face,
   pts,
+  face,
   trend,
-  reward = 'Premio: elige el reto del lunes.',
   className = '',
 }: MVPBoardProps) {
   return (
-    <div className={`relative mb-4 ${className}`}>
-      {/* Crown Banner */}
-      <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1 bg-black text-[#FFD60A] font-display text-[14px] px-3 py-1 rotate-[-3deg] border-[2.5px] border-[#FFD60A] shadow-comic">
-        <Icon size={16} stroke={2.5}>
-          <path d="M3 7l4 5 5-7 5 7 4-5v11H3z" />
-          <path d="M3 18h18" />
-        </Icon>
-        EL MVP DE LA SEMANA
-      </div>
+    <div className={`relative bg-[#FFD60A] border-[4px] border-black p-6 shadow-comic-xl overflow-hidden ${className}`}>
+      {/* Background patterns */}
+      <div className="absolute inset-0 stripes-white opacity-20 pointer-events-none" />
+      <div className="absolute inset-0 halftone opacity-30 pointer-events-none" />
       
-      <div className="relative bg-[#FFC300] border-[4px] border-black rounded-md shadow-comic-xl overflow-hidden">
-        {/* Decorative Halftone & Burst */}
-        <div className="absolute inset-0 halftone opacity-30 pointer-events-none" />
-        <div className="absolute -right-6 -top-6 w-32 h-32 burst bg-white border-2 border-black opacity-60" />
-        
-        {/* Content */}
-        <div className="relative px-4 pt-6 pb-4 flex items-center gap-3">
-          <div className="relative flex-shrink-0">
-            <Avatar face={face} size="lg" className="border-[3.5px] border-black" />
-            <div className="absolute -top-4 -left-3 text-[#EF233C] drop-shadow-comic">
-              <Icon size={36} stroke={3} fill="#EF233C">
-                <path d="M3 7l4 5 5-7 5 7 4-5v11H3z" />
-                <path d="M3 18h18" />
-              </Icon>
-            </div>
+      <div className="relative z-10 flex items-center justify-between">
+        <div className="flex-1">
+          <div className="font-heavy text-[11px] text-black tracking-[0.2em] uppercase mb-1">
+            EL REY DE LA PISTA ↓
           </div>
-          
-          <div className="flex-1 min-w-0">
-            <div className="font-heavy text-[11px] tracking-wider text-black/70 uppercase">PUESTO 1 · INTOCABLE</div>
-            <div className="font-display text-[30px] leading-none uppercase truncate">{name}</div>
-            <div className="font-heavy text-[12px] text-black/80 mt-1">
-              {reward}
+          <h2 className="font-display text-[42px] leading-[0.9] uppercase break-words">
+            {name}
+          </h2>
+          <div className="mt-4 flex items-center gap-3">
+            <div className="bg-black text-[#FFD60A] px-3 py-1 font-display text-[20px] shadow-comic">
+              {pts} PTS
             </div>
-          </div>
-          
-          <div className="text-right flex-shrink-0">
-            <div className="font-display text-[40px] leading-none">{pts}</div>
-            <div className="font-heavy text-[10px] uppercase">PUNTOS</div>
-            <div className="mt-1 inline-block bg-[#EF233C] text-white font-heavy text-[10px] px-1.5 py-[2px] border-2 border-black shadow-comic">
-              ↑ +{trend}
-            </div>
+            {trend > 0 && (
+              <span className="font-heavy text-[12px] bg-white px-2 py-0.5 border-[2px] border-black rounded-full animate-bounce">
+                🔥 RACHA
+              </span>
+            )}
           </div>
         </div>
-        
-        {/* Footer info */}
-        <div className="bg-black text-[#FFD60A] font-heavy text-[11px] px-3 py-1.5 flex items-center justify-between">
-          <span className="uppercase">🏆 Ganó el reto del martes (¡PLAS!)</span>
-          <span>★★★</span>
+
+        <div className="relative">
+          <div className="absolute inset-0 bg-white blur-2xl opacity-40 rounded-full animate-pulse" />
+          <Avatar 
+            face={face} 
+            size="xl" 
+            border 
+            className="relative rotate-[5deg] scale-110" 
+          />
+          {/* Crown decoration */}
+          <div className="absolute -top-6 -right-2 text-[32px] rotate-[15deg] drop-shadow-comic">
+            👑
+          </div>
         </div>
+      </div>
+
+      {/* Comic Destellos */}
+      <div className="absolute bottom-2 right-4 font-display text-[14px] text-white/50 italic select-none">
+        #1 ACTUAL
       </div>
     </div>
   )

@@ -27,8 +27,8 @@ describe('CameraModal Organism', () => {
     })
     
     // Mock URL.createObjectURL
-    global.URL.createObjectURL = vi.fn().mockReturnValue('blob:test')
-    global.URL.revokeObjectURL = vi.fn()
+    URL.createObjectURL = vi.fn().mockReturnValue('blob:test')
+    URL.revokeObjectURL = vi.fn()
   })
 
   it('should start camera when opened', () => {

@@ -23,14 +23,18 @@ describe('ThemeCard Organism', () => {
     const { container } = render(
       <ThemeCard title="T" description="D" friendFaces={['face-1', 'face-2']} />
     )
-    // Should have 2 avatars
-    const avatars = container.querySelectorAll('.w-6.h-6')
+    // Avatar components
+    const avatars = container.querySelectorAll('.w-8.h-8')
     expect(avatars.length).toBe(2)
   })
 
   it('shows overflow count for many avatars', () => {
     render(
-      <ThemeCard title="T" description="D" friendFaces={['f1', 'f2', 'f3', 'f4', 'f5']} />
+      <ThemeCard 
+        title="T" 
+        description="D" 
+        friendFaces={['face-1', 'face-2', 'face-3', 'face-4', 'face-5']} 
+      />
     )
     expect(screen.getByText('+2')).toBeInTheDocument()
   })

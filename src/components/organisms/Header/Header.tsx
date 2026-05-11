@@ -1,5 +1,4 @@
 import { Icon } from '../../atoms/Icon'
-import { ComicButton } from '../../atoms/ComicButton'
 
 export interface HeaderProps {
   /** Racha actual del usuario */

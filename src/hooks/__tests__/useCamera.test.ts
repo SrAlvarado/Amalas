@@ -11,7 +11,7 @@ describe('useCamera Hook', () => {
     vi.restoreAllMocks()
     
     // Mock navigator.mediaDevices
-    Object.defineProperty(global.navigator, 'mediaDevices', {
+    Object.defineProperty(navigator, 'mediaDevices', {
       writable: true,
       value: {
         getUserMedia: vi.fn().mockResolvedValue(mockStream),

@@ -3,6 +3,8 @@ import { Icon } from '../../atoms/Icon'
 export interface ActionShootButtonProps {
   /** Acción al pulsar */
   onClick: () => void
+  /** Indica si está deshabilitado */
+  disabled?: boolean
   /** Clases adicionales */
   className?: string
   /** Texto principal */
@@ -17,6 +19,7 @@ export interface ActionShootButtonProps {
  */
 export function ActionShootButton({
   onClick,
+  disabled = false,
   className = '',
   title = 'HACER FOTO',
   highlightText = '(¡YA!)',
@@ -24,7 +27,8 @@ export function ActionShootButton({
   return (
     <button
       onClick={onClick}
-      className={`w-full relative bg-[#1B6CFF] border-[4px] border-black rounded-md py-5 px-4 shadow-comic-xl btn-comic btn-comic-lg overflow-hidden text-left group ${className}`}
+      disabled={disabled}
+      className={`w-full relative bg-[#1B6CFF] border-[4px] border-black rounded-md py-5 px-4 shadow-comic-xl btn-comic btn-comic-lg overflow-hidden text-left group ${disabled ? 'opacity-50 grayscale pointer-events-none' : ''} ${className}`}
     >
       {/* Halftone Texture */}
       <div className="absolute inset-0 halftone opacity-25 pointer-events-none" />

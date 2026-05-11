@@ -5,51 +5,49 @@ const meta: Meta<typeof Avatar> = {
   title: 'Atoms/Avatar',
   component: Avatar,
   tags: ['autodocs'],
+  argTypes: {
+    face: {
+      control: { type: 'select' },
+      options: ['face-1', 'face-2', 'face-3', 'face-4', 'face-5', 'face-6'],
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['sm', 'md', 'lg', 'xl'],
+    },
+  },
 }
-export default meta
 
+export default meta
 type Story = StoryObj<typeof Avatar>
 
 export const Default: Story = {
   args: {
     face: 'face-1',
     size: 'md',
+    border: true,
   },
 }
 
-export const Sizes: Story = {
-  render: () => (
-    <div className="flex items-end gap-4">
-      <Avatar size="sm" face="face-1" />
-      <Avatar size="md" face="face-2" />
-      <Avatar size="lg" face="face-3" />
-      <Avatar size="xl" face="face-4" />
-    </div>
-  ),
+export const Large: Story = {
+  args: {
+    face: 'face-2',
+    size: 'lg',
+    border: true,
+  },
 }
 
-export const Faces: Story = {
-  render: () => (
-    <div className="flex flex-wrap gap-4">
-      {(['face-1', 'face-2', 'face-3', 'face-4', 'face-5', 'face-6'] as const).map((face) => (
-        <Avatar key={face} face={face} size="md" />
-      ))}
-    </div>
-  ),
-}
-
-export const IsYou: Story = {
+export const ExtraLarge: Story = {
   args: {
     face: 'face-5',
-    size: 'lg',
-    isYou: true,
+    size: 'xl',
+    border: true,
   },
 }
 
-export const WithChildren: Story = {
+export const NoBorder: Story = {
   args: {
+    face: 'face-3',
     size: 'md',
-    children: <span className="font-display text-white text-xl">?</span>,
-    className: 'bg-black/60',
+    border: false,
   },
 }

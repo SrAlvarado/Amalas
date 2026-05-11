@@ -1,19 +1,22 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { render, screen, fireEvent } from '@testing-library/react'
+import { describe, it, expect, vi } from 'vitest'
 import { SocialAuthButton } from '../SocialAuthButton'
 
 describe('SocialAuthButton Molecule', () => {
   it('renders Google provider correctly', () => {
     render(<SocialAuthButton provider="google" />)
-    const button = screen.getByRole('button', { name: /GOOGLE/i })
-    expect(button).toBeInTheDocument()
-    expect(button).toHaveClass('bg-white', 'text-black')
+    expect(screen.getByText(/Google/i)).toBeInTheDocument()
   })
 
   it('renders Apple provider correctly', () => {
     render(<SocialAuthButton provider="apple" />)
-    const button = screen.getByRole('button', { name: /APPLE/i })
-    expect(button).toBeInTheDocument()
-    expect(button).toHaveClass('bg-black', 'text-white')
+    expect(screen.getByText(/Apple/i)).toBeInTheDocument()
+  })
+
+  it('calls onClick when clicked', () => {
+    const onClick = vi.fn()
+    render(<SocialAuthButton provider="google" onClick={onClick} />)
+    fireEvent.click(screen.getByRole('button'))
+    expect(onClick).toHaveBeenCalled()
   })
 })

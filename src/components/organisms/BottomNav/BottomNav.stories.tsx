@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { useState } from 'react'
-import { BottomNav, TabId } from './BottomNav'
+import { BottomNav } from './BottomNav'
+import type { TabId } from './BottomNav'
 
 const meta: Meta<typeof BottomNav> = {
   title: 'Organisms/BottomNav',

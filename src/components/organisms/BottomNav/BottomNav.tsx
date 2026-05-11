@@ -63,7 +63,6 @@ export function BottomNav({
         {items.map((item) => (
           <NavItem
             key={item.id}
-            id={item.id}
             label={item.label}
             icon={item.icon}
             isActive={activeTab === item.id}

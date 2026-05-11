@@ -1,38 +1,61 @@
-import { ReactNode, forwardRef } from 'react'
-import { Input, InputProps } from '../../atoms/Input'
+import { forwardRef } from 'react'
+import type { ReactNode } from 'react'
+import { Input } from '../../atoms/Input'
+import type { InputProps } from '../../atoms/Input'
 
 export interface FormFieldProps extends InputProps {
-  /** Etiqueta del campo */
+  /** Etiqueta que aparece sobre el input */
   label: string
-  /** Texto de ayuda o pista (arriba a la derecha) */
-  hint?: ReactNode
-  /** Mensaje de error (abajo) */
+  /** Mensaje de error a mostrar debajo */
   error?: string
+  /** Texto de ayuda opcional */
+  hint?: ReactNode
+  /** Icono opcional al inicio */
+  icon?: ReactNode
 }
 
 /**
- * Molécula FormField: Combina un Label, un Input y mensajes de Error/Hint.
- * Es la unidad básica para construir formularios en la app.
+ * Molécula FormField: Combina un label, un input y un mensaje de error.
+ * Sigue la estética cómic con tipografía heavy y colores de contraste.
  */
 export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
-  ({ label, hint, error, ...inputProps }, ref) => {
+  ({ label, error, hint, icon, id, className = '', ...props }, ref) => {
+    const hasError = !!error
+    
     return (
-      <div className="block w-full">
-        <div className="font-heavy text-[11px] tracking-wider mb-1 flex items-center justify-between">
-          <label className="uppercase">{label}</label>
-          {hint && <span className="text-black/55 font-heavy text-[10px]">{hint}</span>}
+      <div className={`flex flex-col gap-2 w-full ${className}`}>
+        <label 
+          htmlFor={id} 
+          className="font-heavy text-[11px] text-black tracking-widest uppercase ml-1"
+        >
+          {label}
+        </label>
+        
+        <div className="relative flex items-center">
+          {icon && (
+            <span className="absolute left-3 z-10 text-black/50">
+              {icon}
+            </span>
+          )}
+          <Input 
+            ref={ref}
+            id={id}
+            hasError={hasError}
+            className={icon ? 'pl-10' : ''}
+            {...props}
+          />
         </div>
         
-        <Input 
-          ref={ref} 
-          hasError={!!error} 
-          {...inputProps} 
-        />
-        
         {error && (
-          <div className="font-heavy text-[10px] text-[#EF233C] mt-1 animate-in fade-in slide-in-from-top-1">
-            ⚠ {error}
-          </div>
+          <span className="font-heavy text-[10px] text-[#EF233C] uppercase ml-1 animate-in slide-in-from-top-1">
+            {error}
+          </span>
+        )}
+        
+        {hint && !error && (
+          <span className="font-heavy text-[10px] text-black/40 uppercase ml-1">
+            {hint}
+          </span>
         )}
       </div>
     )

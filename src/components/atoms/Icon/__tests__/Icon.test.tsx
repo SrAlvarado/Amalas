@@ -15,7 +15,8 @@ describe('Icon Component', () => {
     expect(svg).toHaveAttribute('height', '24')
     expect(svg).toHaveAttribute('fill', 'none')
     expect(svg).toHaveAttribute('stroke', 'currentColor')
-    expect(svg).toHaveAttribute('stroke-width', '2.5')
+    // El valor por defecto en Icon.tsx es 2
+    expect(svg).toHaveAttribute('stroke-width', '2')
   })
 
   it('applies custom size and stroke', () => {

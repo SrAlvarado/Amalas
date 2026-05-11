@@ -9,7 +9,7 @@ import { useAuth } from './hooks/useAuth'
 type Page = 'login' | 'register' | 'reto' | 'votar' | 'rank'
 
 function App() {
-  const { isAuthenticated, loading } = useAuth()
+  const { loading } = useAuth()
   const [currentPage, setCurrentPage] = useState<Page>('reto') // Forzar reto para visualización MVP
 
   // Loading state

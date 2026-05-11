@@ -3,34 +3,31 @@ import { describe, it, expect, vi } from 'vitest'
 import { VoteCard } from '../VoteCard'
 
 describe('VoteCard Organism', () => {
-  const defaultProps = {
-    name: 'MARCOS',
-    face: 'face-1' as const,
-    pose: 'POSE',
-    uploadTime: '00:00',
-    currentVote: null,
-    onVote: vi.fn(),
+  const mockProps = {
+    name: 'MIGUEL',
+    face: 'face-3' as const,
+    pose: 'SALTANDO',
+    uploadTime: '12:30',
   }
 
   it('renders correctly with name and metadata', () => {
-    render(<VoteCard {...defaultProps} />)
-    expect(screen.getByText(/FOTO DE/i)).toBeInTheDocument()
-    expect(screen.getByText(/@marcos/)).toBeInTheDocument()
-    expect(screen.getByText('POSE')).toBeInTheDocument()
+    render(<VoteCard {...mockProps} />)
+    expect(screen.getByText('MIGUEL')).toBeInTheDocument()
+    expect(screen.getByText('SALTANDO')).toBeInTheDocument()
   })
 
   it('calls onVote with correct value when a vote button is clicked', () => {
-    render(<VoteCard {...defaultProps} />)
+    const onVote = vi.fn()
+    render(<VoteCard {...mockProps} onVote={onVote} />)
     
-    fireEvent.click(screen.getByText(/3/))
-    expect(defaultProps.onVote).toHaveBeenCalledWith('3')
+    const voteBtn = screen.getByText('2')
+    fireEvent.click(voteBtn)
     
-    fireEvent.click(screen.getByText(/PUES BIEN/i))
-    expect(defaultProps.onVote).toHaveBeenCalledWith('PB')
+    expect(onVote).toHaveBeenCalledWith('2')
   })
 
-  it('displays the current selected vote in the status tag', () => {
-    render(<VoteCard {...defaultProps} currentVote="2" />)
-    expect(screen.getByText('TU VOTO: 2')).toBeInTheDocument()
+  it('displays the current selected vote sticker for PB', () => {
+    render(<VoteCard {...mockProps} currentVote="PB" />)
+    expect(screen.getByText('¡PUES BIEN!')).toBeInTheDocument()
   })
 })

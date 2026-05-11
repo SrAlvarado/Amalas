@@ -1,14 +1,19 @@
-import { ReactNode } from 'react'
-import { Header, HeaderProps } from '../organisms/Header'
-import { BottomNav, TabId } from '../organisms/BottomNav'
+import type { ReactNode } from 'react'
+import { Header } from '../../organisms/Header/Header'
+import { BottomNav } from '../../organisms/BottomNav/BottomNav'
+import type { TabId } from '../../organisms/BottomNav/BottomNav'
 
-export interface AppShellProps extends HeaderProps {
+export interface AppShellProps {
   /** Contenido principal de la página */
   children: ReactNode
   /** ID de la pestaña activa */
   activeTab: TabId
   /** Callback al cambiar de pestaña */
   onTabChange: (tabId: TabId) => void
+  /** Racha del usuario */
+  streak: number
+  /** Notificaciones pendientes */
+  notifications: number
   /** Clases adicionales para el contenedor de contenido */
   contentClassName?: string
 }
