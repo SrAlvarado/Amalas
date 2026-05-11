@@ -5,22 +5,25 @@ import { TimerCard } from '../components/organisms/TimerCard'
 import { ActionShootButton } from '../components/organisms/ActionShootButton'
 import { SquadGrid } from '../components/organisms/SquadGrid'
 import { CameraModal } from '../components/organisms/CameraModal'
-import type { TabId } from '../components/organisms/BottomNav'
+import type { PageId } from '../App'
 
 import { useDailyChallenge } from '../hooks/useDailyChallenge'
 import { useSubmissions } from '../hooks/useSubmissions'
 import { useAuth } from '../hooks/useAuth'
 
+interface RetoPageProps {
+  onNavigate: (page: PageId) => void
+}
+
 /**
  * Página RetoPage: Pantalla principal del día.
  * Muestra el tema del reto, el tiempo restante, el botón de acción y el estado de la cuadrilla.
  */
-export function RetoPage() {
+export function RetoPage({ onNavigate }: RetoPageProps) {
   const { user } = useAuth()
   const { challenge, loading: challengeLoading } = useDailyChallenge()
   const { uploadSubmission, isUploading } = useSubmissions()
   
-  const [activeTab, setActiveTab] = useState<TabId>('reto')
   const [isCameraOpen, setIsCameraOpen] = useState(false)
   const [timeLeft, setTimeLeft] = useState({ h: 0, m: 0, s: 0 })
 
@@ -71,8 +74,8 @@ export function RetoPage() {
 
   return (
     <AppShell 
-      activeTab={activeTab} 
-      onTabChange={setActiveTab}
+      activeTab="reto" 
+      onTabChange={(tab) => onNavigate(tab as PageId)}
       streak={4}
       notifications={2}
     >

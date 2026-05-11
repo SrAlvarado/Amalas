@@ -1,7 +1,7 @@
 import { NavItem } from '../../molecules/NavItem'
 import { Icon } from '../../atoms/Icon'
 
-export type TabId = 'reto' | 'votar' | 'rank'
+export type TabId = 'reto' | 'juicio' | 'muro'
 
 export interface BottomNavProps {
   /** Pestaña actualmente activa */
@@ -34,7 +34,7 @@ export function BottomNav({
       ) 
     },
     { 
-      id: 'votar' as TabId, 
+      id: 'juicio' as TabId, 
       label: 'JUICIO', 
       icon: (
         <Icon size={22} stroke={2.5}>
@@ -46,7 +46,7 @@ export function BottomNav({
       ) 
     },
     { 
-      id: 'rank' as TabId, 
+      id: 'muro' as TabId, 
       label: 'EL MURO', 
       icon: (
         <Icon size={22} stroke={2.5}>

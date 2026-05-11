@@ -3,12 +3,17 @@ import { AuthHeader } from '../components/organisms/AuthHeader'
 import { SocialAuthButton } from '../components/molecules/SocialAuthButton'
 import { SpeechBubble } from '../components/molecules/SpeechBubble'
 import { useAuth } from '../hooks/useAuth'
+import type { PageId } from '../App'
+
+interface LoginPageProps {
+  onNavigate: (page: PageId) => void
+}
 
 /**
  * Página LoginPage: Punto de entrada a la aplicación.
  * Presenta la marca y las opciones de acceso social.
  */
-export function LoginPage() {
+export function LoginPage({ onNavigate }: LoginPageProps) {
   const { loginWithGoogle, loginWithApple } = useAuth()
 
   return (
@@ -31,6 +36,15 @@ export function LoginPage() {
           onClick={loginWithApple}
           className="w-full"
         />
+      </div>
+
+      <div className="mt-8 text-center">
+        <button 
+          onClick={() => onNavigate('register')}
+          className="font-display text-[14px] text-[#1B6CFF] uppercase hover:underline"
+        >
+          ¿Eres nuevo? Regístrate aquí
+        </button>
       </div>
 
       <div className="mt-12">

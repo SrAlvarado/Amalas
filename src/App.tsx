@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { RetoPage } from './pages/RetoPage'
@@ -6,13 +6,28 @@ import { JuicioPage } from './pages/JuicioPage'
 import { RankingPage } from './pages/RankingPage'
 import { useAuth } from './hooks/useAuth'
 
-type Page = 'login' | 'register' | 'reto' | 'votar' | 'rank'
+export type PageId = 'login' | 'register' | 'reto' | 'juicio' | 'muro'
 
 function App() {
-  const { loading } = useAuth()
-  const [currentPage, setCurrentPage] = useState<Page>('reto') // Forzar reto para visualización MVP
+  const { user, loading } = useAuth()
+  const [currentPage, setCurrentPage] = useState<PageId>('login')
 
-  // Loading state
+  // Sincronización de estado de autenticación
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        // Si hay usuario y estamos en pantallas de auth, saltamos al juego
+        if (currentPage === 'login' || currentPage === 'register') {
+          setCurrentPage('reto')
+        }
+      } else {
+        // Si no hay usuario, forzamos login
+        setCurrentPage('login')
+      }
+    }
+  }, [user, loading])
+
+  // Pantalla de carga premium
   if (loading) {
     return (
       <div className="h-screen w-screen bg-[#F4ECD8] flex items-center justify-center">
@@ -25,31 +40,24 @@ function App() {
 
   const renderPage = () => {
     switch (currentPage) {
-      case 'login': return <LoginPage />
-      case 'register': return <RegisterPage />
-      case 'reto': return <RetoPage />
-      case 'votar': return <JuicioPage />
-      case 'rank': return <RankingPage />
-      default: return <RetoPage />
+      case 'login': 
+        return <LoginPage onNavigate={setCurrentPage} />
+      case 'register': 
+        return <RegisterPage onNavigate={setCurrentPage} />
+      case 'reto': 
+        return <RetoPage onNavigate={setCurrentPage} />
+      case 'juicio': 
+        return <JuicioPage onNavigate={setCurrentPage} />
+      case 'muro': 
+        return <RankingPage onNavigate={setCurrentPage} />
+      default: 
+        return <RetoPage onNavigate={setCurrentPage} />
     }
   }
 
   return (
     <div className="bg-black min-h-screen">
       {renderPage()}
-      
-      {/* Dev Navigation Helper - Para que el usuario pueda cambiar entre pantallas en la demo */}
-      <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 flex justify-center gap-1">
-        {['login', 'register', 'reto', 'votar', 'rank'].map((p) => (
-          <button 
-            key={p}
-            onClick={() => setCurrentPage(p as Page)}
-            className={`px-2 py-1 border border-white/20 uppercase text-[8px] font-bold ${currentPage === p ? 'bg-[#FFD60A] text-black' : 'bg-black text-white'}`}
-          >
-            {p}
-          </button>
-        ))}
-      </div>
     </div>
   )
 }

@@ -1,19 +1,21 @@
-import { useState } from 'react'
 import { AppShell } from '../components/templates/AppShell'
 import { MVPBoard } from '../components/organisms/MVPBoard'
 import { LoserBoard } from '../components/organisms/LoserBoard'
 import { RankItem } from '../components/molecules/RankItem'
 import { useRanking } from '../hooks/useRanking'
 import { useAuth } from '../hooks/useAuth'
-import type { TabId } from '../components/organisms/BottomNav'
+import type { PageId } from '../App'
+
+interface RankingPageProps {
+  onNavigate: (page: PageId) => void
+}
 
 /**
  * Página RankingPage: "EL MURO" con datos reales.
  * Muestra el estado del mes calculando puntos y penalizaciones.
  */
-export function RankingPage() {
+export function RankingPage({ onNavigate }: RankingPageProps) {
   const { user } = useAuth()
-  const [activeTab, setActiveTab] = useState<TabId>('rank')
   
   // Squad ID fijo para el MVP
   const SQUAD_ID = '00000000-0000-0000-0000-000000000000'
@@ -27,8 +29,8 @@ export function RankingPage() {
 
   return (
     <AppShell 
-      activeTab={activeTab} 
-      onTabChange={setActiveTab}
+      activeTab="muro" 
+      onTabChange={(tab) => onNavigate(tab as PageId)}
       streak={4}
       notifications={0}
     >

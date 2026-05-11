@@ -6,12 +6,17 @@ import { Avatar } from '../components/atoms/Avatar'
 import type { AvatarFace } from '../components/atoms/Avatar'
 import { StepIndicator } from '../components/molecules/StepIndicator'
 import { Icon } from '../components/atoms/Icon'
+import type { PageId } from '../App'
+
+interface RegisterPageProps {
+  onNavigate: (page: PageId) => void
+}
 
 /**
  * Página RegisterPage: Flujo de alta de nuevo usuario.
  * Proceso en dos pasos: Datos básicos y Personalización (Avatar).
  */
-export function RegisterPage() {
+export function RegisterPage({ onNavigate }: RegisterPageProps) {
   const [step, setStep] = useState(1)
   const [selectedFace, setSelectedFace] = useState<AvatarFace>('face-1')
   const [username, setUsername] = useState('')
@@ -22,6 +27,7 @@ export function RegisterPage() {
   const handleBack = () => setStep(1)
   const handleFinish = () => {
     alert(`¡BIENVENIDO ${username.toUpperCase()}!`)
+    onNavigate('reto')
   }
 
   return (
@@ -62,6 +68,15 @@ export function RegisterPage() {
               <ComicButton className="w-full" size="lg" halftone onClick={handleNext}>
                 SIGUIENTE PASO →
               </ComicButton>
+            </div>
+
+            <div className="text-center">
+              <button 
+                onClick={() => onNavigate('login')}
+                className="font-display text-[14px] text-black/40 uppercase hover:underline"
+              >
+                ¿Ya tienes cuenta? Entra aquí
+              </button>
             </div>
           </div>
         ) : (

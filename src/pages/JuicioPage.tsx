@@ -3,14 +3,17 @@ import { AppShell } from '../components/templates/AppShell'
 import { VoteCard } from '../components/organisms/VoteCard'
 import { useDailyChallenge } from '../hooks/useDailyChallenge'
 import { useVotation } from '../hooks/useVotation'
-import type { TabId } from '../components/organisms/BottomNav'
+import type { PageId } from '../App'
+
+interface JuicioPageProps {
+  onNavigate: (page: PageId) => void
+}
 
 /**
  * Página JuicioPage: Pantalla de votaciones real.
  * Obtiene las fotos de los compañeros y permite repartir los puntos.
  */
-export function JuicioPage() {
-  const [activeTab, setActiveTab] = useState<TabId>('votar')
+export function JuicioPage({ onNavigate }: JuicioPageProps) {
   const { challenge } = useDailyChallenge()
   const { castVote, getSquadSubmissions, loading: votationLoading } = useVotation()
   
@@ -46,8 +49,8 @@ export function JuicioPage() {
 
   return (
     <AppShell 
-      activeTab={activeTab} 
-      onTabChange={setActiveTab}
+      activeTab="juicio" 
+      onTabChange={(tab) => onNavigate(tab as PageId)}
       streak={4}
       notifications={2}
     >

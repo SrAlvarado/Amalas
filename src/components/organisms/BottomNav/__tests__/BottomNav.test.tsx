@@ -15,17 +15,17 @@ describe('BottomNav Organism', () => {
     render(<BottomNav activeTab="reto" onTabChange={handleChange} />)
     
     fireEvent.click(screen.getByText('JUICIO'))
-    expect(handleChange).toHaveBeenCalledWith('votar')
+    expect(handleChange).toHaveBeenCalledWith('juicio')
     
     fireEvent.click(screen.getByText('EL MURO'))
-    expect(handleChange).toHaveBeenCalledWith('rank')
+    expect(handleChange).toHaveBeenCalledWith('muro')
   })
 
   it('highlights the active tab', () => {
     const { rerender } = render(<BottomNav activeTab="reto" onTabChange={() => {}} />)
     expect(screen.getByRole('button', { name: /reto/i })).toHaveAttribute('aria-current', 'page')
     
-    rerender(<BottomNav activeTab="votar" onTabChange={() => {}} />)
+    rerender(<BottomNav activeTab="juicio" onTabChange={() => {}} />)
     expect(screen.getByRole('button', { name: /juicio/i })).toHaveAttribute('aria-current', 'page')
   })
 })
