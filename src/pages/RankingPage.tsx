@@ -3,22 +3,27 @@ import { AppShell } from '../components/templates/AppShell'
 import { MVPBoard } from '../components/organisms/MVPBoard'
 import { LoserBoard } from '../components/organisms/LoserBoard'
 import { RankItem } from '../components/molecules/RankItem'
+import { useRanking } from '../hooks/useRanking'
+import { useAuth } from '../hooks/useAuth'
 import type { TabId } from '../components/organisms/BottomNav'
 
 /**
- * Página RankingPage: "EL MURO".
- * Muestra el estado del mes, destacando al MVP y al Perdedor, seguido del resto del grupo.
+ * Página RankingPage: "EL MURO" con datos reales.
+ * Muestra el estado del mes calculando puntos y penalizaciones.
  */
 export function RankingPage() {
+  const { user } = useAuth()
   const [activeTab, setActiveTab] = useState<TabId>('rank')
+  
+  // Squad ID fijo para el MVP
+  const SQUAD_ID = '00000000-0000-0000-0000-000000000000'
+  const { ranking, loading } = useRanking(SQUAD_ID)
 
-  const rankingData = [
-    { pos: 2, name: 'MARCOS', pts: 36, face: 'face-1' as const, trend: 3 },
-    { pos: 3, name: 'PAU', pts: 31, face: 'face-3' as const, trend: -1 },
-    { pos: 4, name: 'TÚ', pts: 28, face: 'face-5' as const, trend: 2, isYou: true },
-    { pos: 5, name: 'INES', pts: 24, face: 'face-4' as const, trend: 0 },
-    { pos: 6, name: 'PEPE', pts: 21, face: 'face-6' as const, trend: -2 },
-  ]
+  if (loading) return <div className="h-screen bg-[#F4ECD8] flex items-center justify-center font-display uppercase">Calculando el muro...</div>
+
+  const mvp = ranking[0]
+  const loser = ranking.length > 1 ? ranking[ranking.length - 1] : null
+  const middleRank = ranking.slice(1, ranking.length - 1)
 
   return (
     <AppShell 
@@ -28,41 +33,57 @@ export function RankingPage() {
       notifications={0}
     >
       <div className="space-y-8">
-        {/* Intro */}
         <div className="px-1">
           <h2 className="font-display text-[26px] leading-tight uppercase">EL MURO</h2>
-          <p className="font-heavy text-[12px] text-black/60 uppercase">Clasificación del mes de Mayo</p>
+          <p className="font-heavy text-[12px] text-black/60 uppercase">Clasificación real de tu cuadrilla</p>
         </div>
 
-        {/* MVP Section */}
-        <MVPBoard 
-          name="LAIA" 
-          face="face-2" 
-          pts={42} 
-          trend={7} 
-        />
+        {/* MVP */}
+        {mvp && (
+          <MVPBoard 
+            name={mvp.username} 
+            face={mvp.avatar_face} 
+            pts={mvp.total_pts} 
+            trend={0} 
+          />
+        )}
 
         {/* Middle Ranking */}
         <div className="space-y-3">
-          {rankingData.map((item) => (
-            <RankItem key={item.name} {...item} />
+          {middleRank.map((item, index) => (
+            <RankItem 
+              key={item.profile_id} 
+              pos={index + 2}
+              name={item.username}
+              pts={item.total_pts}
+              face={item.avatar_face}
+              trend={0}
+              isYou={item.profile_id === user?.id}
+            />
           ))}
         </div>
 
-        {/* Loser Section */}
-        <LoserBoard 
-          pos={12} 
-          name="JON" 
-          pts={14} 
-          face="face-6" 
-          punishmentTitle="Pagar la próxima ronda"
-          punishmentDesc="El lunes en el bar de siempre."
-        />
+        {/* Loser */}
+        {loser && (
+          <LoserBoard 
+            pos={ranking.length} 
+            name={loser.username} 
+            pts={loser.total_pts} 
+            face={loser.avatar_face} 
+            punishmentTitle="Pagar la próxima ronda"
+            punishmentDesc="El lunes en el bar de siempre."
+          />
+        )}
 
-        {/* Footer info */}
+        {ranking.length === 0 && (
+          <div className="text-center p-12 opacity-30 font-display uppercase italic">
+            El muro está vacío...<br/>Empieza a subir fotos.
+          </div>
+        )}
+
         <div className="text-center py-4">
           <p className="font-heavy text-[10px] text-black/40 uppercase">
-            El ranking se reinicia en 12 días
+            Actualizado en tiempo real
           </p>
         </div>
       </div>
