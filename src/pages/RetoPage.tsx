@@ -6,6 +6,8 @@ import { ActionShootButton } from '../components/organisms/ActionShootButton'
 import { SquadGrid } from '../components/organisms/SquadGrid'
 import type { TabId } from '../components/organisms/BottomNav'
 
+import { CameraModal } from '../components/organisms/CameraModal'
+
 /**
  * Página RetoPage: Pantalla principal del día.
  * Muestra el tema del reto, el tiempo restante, el botón de acción y el estado de la cuadrilla.
@@ -13,6 +15,7 @@ import type { TabId } from '../components/organisms/BottomNav'
 export function RetoPage() {
   const [activeTab, setActiveTab] = useState<TabId>('reto')
   const [timeLeft, setTimeLeft] = useState({ h: 3, m: 45, s: 12 })
+  const [isCameraOpen, setIsCameraOpen] = useState(false)
 
   // Mock data - En el futuro vendrá de useReto()
   const theme = {
@@ -30,6 +33,11 @@ export function RetoPage() {
     { name: 'JON', face: 'face-6' as const, done: false },
     { name: 'PAU', face: 'face-3' as const, done: false },
   ]
+
+  const handlePhotoCaptured = (blob: Blob) => {
+    console.log('FOTO CAPTURADA:', blob)
+    alert('¡FOTO LISTA PARA SUBIR! (Próximamente en Fase 3)')
+  }
 
   return (
     <AppShell 
@@ -57,11 +65,18 @@ export function RetoPage() {
 
         {/* Action Button */}
         <ActionShootButton 
-          onClick={() => alert('Abriendo cámara gamberra...')} 
+          onClick={() => setIsCameraOpen(true)} 
         />
 
         {/* Squad Grid */}
         <SquadGrid members={squad} />
+
+        {/* Camera Modal */}
+        <CameraModal 
+          isOpen={isCameraOpen} 
+          onClose={() => setIsCameraOpen(false)} 
+          onPhotoCaptured={handlePhotoCaptured} 
+        />
       </div>
     </AppShell>
   )
