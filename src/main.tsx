@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import App from './App'
 
 // Fuentes cómic desde Google Fonts
 const linkFonts = document.createElement('link')
@@ -13,9 +14,6 @@ const rootElement = document.getElementById('root')!
 
 createRoot(rootElement).render(
   <StrictMode>
-    {/* App se irá añadiendo aquí cuando esté lista */}
-    <div style={{ color: 'white', padding: 32, fontFamily: 'monospace' }}>
-      🎉 A malas — Proyecto inicializado
-    </div>
+    <App />
   </StrictMode>,
 )
